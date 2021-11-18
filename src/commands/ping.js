@@ -13,5 +13,5 @@ module.exports.run = async (interaction = new CommandInteraction) => {
     const api = Math.ceil(interaction.client.ws.ping);
     const server = Date.now() - interaction.createdTimestamp;
 
-    return await interaction.reply(`🏓 Пинг сервера \`${server}ms\`, пинг API \`${api}ms\`, аптайм бота \`${uptime}\`.`);
+    return await interaction.reply(`🏓 Server latency \`${server}ms\`, API latency \`${api}ms\` and bot uptime is \`${uptime}\`.`);
 };
