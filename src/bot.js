@@ -87,8 +87,7 @@ client.on("messageCreate", async (message) => {
 });
 
 const updatePresence = async () => {
-    const gc = await client.shard.broadcastEval(bot => bot.guilds.cache.size).then(res => res.reduce((prev, cur) => prev + cur, 0));
-    let text = `тикток фм | ${gc} guilds`;
+    let text = "padow.host";
     return client.user.setPresence({
         status: "idle",
         activities: [{ type: "PLAYING", name: text }],
