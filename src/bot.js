@@ -79,7 +79,6 @@ client.on("messageCreate", async (message) => {
     const gdb = await db.guild(message.guild.id);
 
     global.gdb = gdb;
-    global.gsdb = gsdb;
     global.gldb = db.global;
 
     if (message.content.startsWith(config.prefix) || message.content.match(`^<@!?${client.user.id}> `)) return commandHandler(message, config.prefix, gdb, db);
