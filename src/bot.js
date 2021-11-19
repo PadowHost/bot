@@ -77,19 +77,12 @@ client.on("messageCreate", async (message) => {
     ) return;
 
     const gdb = await db.guild(message.guild.id);
-    const gsdb = await db.settings(message.guild.id);
-
-    if (gdb.get().mutes[message.author.id] && gsdb.get().delMuted) return deleteMessage(message);
-    if (gdb.get().mutes[message.author.id]) return;
 
     global.gdb = gdb;
     global.gsdb = gsdb;
     global.gldb = db.global;
 
-    let { channel } = gdb.get();
-
     if (message.content.startsWith(config.prefix) || message.content.match(`^<@!?${client.user.id}> `)) return commandHandler(message, config.prefix, gdb, db);
-    if (channel == message.channel.id) return countingHandler(message, gdb);
     if (message.content.match(`^<@!?${client.user.id}>`)) return message.react("👋").catch(() => { });
 });
 
