@@ -5,22 +5,15 @@ const commandHandler = require("./handlers/commands");
 const interactionHandler = require("./handlers/interactions/");
 const client = new Discord.Client({
     makeCache: Discord.Options.cacheWithLimits({
-        BaseGuildEmojiManager: 0,
         GuildStickerManager: 0,
         GuildInviteManager: 0,
         GuildEmojiManager: 0,
-        GuildBanManager: {
-            sweepInterval: 10,
-            sweepFilter: Discord.LimitedCollection.filterByLifetime({
-                lifetime: 5
-            })
-        },
+        GuildBanManager: 0,
         MessageManager: {
-            sweepInterval: 60,
-            maxSize: 100,
+            maxSize: 4096,
             keepOverLimit: (message) => message.author.id != message.client.user.id,
             sweepFilter: Discord.LimitedCollection.filterByLifetime({
-                lifetime: 300
+                lifetime: 21600
             })
         }
     }),
@@ -49,8 +42,6 @@ client.once("shardReady", async (shardId, unavailable = new Set()) => {
     shard = `[Shard ${shardId}]`;
     console.log(`${shard} Ready as ${client.user.tag}! Caching guilds.`);
 
-    client.loading = true;
-
     let disabledGuilds = new Set([...Array.from(unavailable), ...client.guilds.cache.map((guild) => guild.id)]);
     let guildCachingStart = Date.now();
 
@@ -63,8 +54,6 @@ client.once("shardReady", async (shardId, unavailable = new Set()) => {
 
     await require("./handlers/interactions/slash").registerCommands(client);
     console.log(`${shard} Refreshed slash commands.`);
-
-    client.loading = false;
 
     await updatePresence();
     setInterval(updatePresence, 60 * 1000); // 1 minute
@@ -82,7 +71,6 @@ client.on("messageCreate", async (message) => {
     global.gldb = db.global;
 
     if (message.content.startsWith(config.prefix) || message.content.match(`^<@!?${client.user.id}> `)) return commandHandler(message, config.prefix, gdb, db);
-    if (message.content.match(`^<@!?${client.user.id}>`)) return message.react("👋").catch(() => { });
 });
 
 const updatePresence = async () => {

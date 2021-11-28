@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 const dbCache = new Map(), dbSaveQueue = new Map();
 
 const globalObject = {
-    maintenance: false
+    domains: []
 };
 
 const globalSchema = Schema(JSON.parse(JSON.stringify(globalObject)), { minimize: true });

@@ -22,7 +22,6 @@
         "bufferutil": "^4.0.5",
         "discord-api-types": "^0.24.0",
         "discord.js": "^13.3.1",
-        "express": "^4.17.1",
         "mongoose": "^6.0.13",
         "nodejs-better-console": "^1.0.2",
         "utf-8-validate": "^5.0.7",

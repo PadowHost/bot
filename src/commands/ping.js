@@ -1,6 +1,6 @@
 module.exports = {
     name: "ping",
-    description: "Посмотреть задержку и аптайм бота.",
+    description: "Bot latency and uptime.",
     permissionRequired: 0,
     slash: true
 };
