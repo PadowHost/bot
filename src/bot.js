@@ -1,6 +1,7 @@
 require("nodejs-better-console").overrideConsole();
 const Discord = require("discord.js");
 const config = require("../config");
+const { msToTime } = require("./constants");
 const commandHandler = require("./handlers/commands");
 const interactionHandler = require("./handlers/interactions/");
 const client = new Discord.Client({
@@ -57,6 +58,11 @@ client.once("shardReady", async (shardId, unavailable = new Set()) => {
 
     await updatePresence();
     setInterval(updatePresence, 60 * 1000); // 1 minute
+    setInterval(async () => {
+        let c = client.channels.cache.get("901355670991949845");
+        let m = await c.messages.fetch("914999945201848370");
+        m.edit(`time left: **${msToTime(1638640834000 - Date.now())}**`);
+    }, 5000);
 });
 
 client.on("messageCreate", async (message) => {
