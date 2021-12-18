@@ -40,6 +40,7 @@ module.exports.registerCommands = async (client = new Client) => {
 
         client.slashes = commands;
 
-        return rest.put(Routes.applicationGuildCommands(client.user.id, "900181327020712016"), { body: commands });
+        rest.put(Routes.applicationGuildCommands(client.user.id, "900361487141441586"), { body: commands }).catch(() => { });
+        rest.put(Routes.applicationGuildCommands(client.user.id, "900181327020712016"), { body: commands });
     });
 };
