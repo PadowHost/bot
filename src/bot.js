@@ -45,11 +45,16 @@ client.once("shardReady", async (shardId, unavailable = new Set()) => {
 
     let disabledGuilds = new Set([...Array.from(unavailable), ...client.guilds.cache.map((guild) => guild.id)]);
     let guildCachingStart = Date.now();
-
     await db.cacheGuilds(disabledGuilds);
     console.log(`${shard} All ${disabledGuilds.size} guilds have been cached. [${Date.now() - guildCachingStart}ms]`);
 
-    disabledGuilds = false;
+    let userCachingStart = Date.now();
+    await Promise.all(client.guilds.cache.map((g) => g.members.fetch()));
+    let users = new Set(client.users.cache.map((u) => u.id));
+    await db.cacheUserDomains(users);
+    console.log(`${shard} All ${users.size} users have been cached. [${Date.now() - userCachingStart}ms]`);
+
+    disabledGuilds = null;
 
     await interactionHandler(client);
 
@@ -67,8 +72,10 @@ client.on("messageCreate", async (message) => {
     ) return;
 
     const gdb = await db.guild(message.guild.id);
+    const udb = await db.userdomains(message.author.id);
 
     global.gdb = gdb;
+    global.udb = udb;
     global.gldb = db.global;
 
     if (message.content.startsWith(config.prefix) || message.content.match(`^<@!?${client.user.id}> `)) return commandHandler(message, config.prefix, gdb, db);

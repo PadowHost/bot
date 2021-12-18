@@ -8,6 +8,8 @@ module.exports = () => {
     return {
         guild: require("./guild")(),
         cacheGuilds: require("./guild").cacheAll,
+        userdomains: require("./userdomains")(),
+        cacheUserDomains: require("./userdomains").cacheAll,
         global: require("./global")
     };
 };
