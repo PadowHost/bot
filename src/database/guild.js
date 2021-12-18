@@ -94,25 +94,6 @@ module.exports = () => (async guildid => {
             save(guildid, Object.keys(guildObject));
 
             return dbCache.get(guildid);
-        },
-        addToCount: (member) => {
-            let guildCache = dbCache.get(guildid);
-            guildCache.count++;
-            guildCache.user = member.id;
-
-            if (!guildCache.users[member.id]) guildCache.users[member.id] = 0;
-            guildCache.users[member.id]++;
-
-            let dateFormat = getDateFormatted(new Date());
-            if (!guildCache.log[dateFormat]) {
-                guildCache.log[dateFormat] = 0;
-                while (Object.keys(guildCache.log).length > 7) delete guildCache.log[Object.keys(guildCache.log)[0]];
-            };
-            guildCache.log[dateFormat] += 1;
-
-            save(guildid, ["count", "user", "users", "log"]);
-
-            return dbCache.get(guildid);
         }
     };
 });
